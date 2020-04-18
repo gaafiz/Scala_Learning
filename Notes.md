@@ -136,4 +136,41 @@ Everything defined inside, is not available outside
 
 #### Tail recursion
 
-TODO lesson 7
+Recursive functions are the key to write algorithms very in line with the Functional Programming paradingm.
+
+Said that, there is a particular kind of recursion called Tail recusion that - in practice - is equally to a classic iterative loop in imperative programming in terms of performances and memory usage.
+
+In general, if the last action of a function consists of calling a function (which may be the same), one stack frame would be sufficient for both functions. Such calls are called tail-calls.
+In "normal" recusive functions, one additional stack frame needs to be used for each recursive step.
+
+```scala
+/*
+ * This is an example of tail recursive function because
+ * its last and only instruction is calling itself (gcd(b, a % b))
+ */
+def gcd(a: Int, b: Int): Int =
+	if (b == 0) a else gcd(b, a % b)
+
+/*
+ * This is NOT a tail recursive function becaus, as last instruction,
+ * it call itself AND make a multiplication stays pending
+ * and can be resolved only afer the reslut of nested call is also resolved.
+ */
+def factorial(n: Int): Int =
+  if (n == 0) 1 else n * factorial(n - 1)
+
+/*
+ * This is an example of how we can refactor the previous non tail recusive factorial
+ * into a tail recusive version
+ */
+def tail_recursive_factorial(n: Int): Int = {
+  // loop is tail recursive because its only last step is calling itself
+  def loop(acc: Int, n: Int): Int =
+    if (n == 0) acc else loop(acc * n, n - 1)
+
+  loop(0, n)
+}
+```
+
+There is one annotation to force defininf a function as a tail recursive one `@@tailrec`.
+If this annotation is applied to a non tail recursive function, the compilation will fail.
