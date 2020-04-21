@@ -110,11 +110,17 @@ square(3) + square(2+2)
 25
 ```
 
-### Primitive types
+### Primitive types and Built-in types
 
 * **Int**: 32-bit integers
 * **Double**: 64-bit gloating point numbers
 * **Boolean**
+* **Byte**
+* **Short**
+* **Long**
+* **Float**
+* **String**
+
 
 #### Conditional expression if-else
 
@@ -174,3 +180,66 @@ def tail_recursive_factorial(n: Int): Int = {
 
 There is one annotation to force defininf a function as a tail recursive one `@@tailrec`.
 If this annotation is applied to a non tail recursive function, the compilation will fail.
+
+#### Currying //TODO
+
+When you need to define a function that uses some of his arguments to define an retrurn another function, you have 2 possible syntaxes you can use.
+
+```scala
+def applyOperation(x: Int, y: Int, op: (Int, Int) => Int) = op(x, y)
+
+def sum(x, y) = applyOperation((x, y) => x + y, x, y)
+def division(x, y) = sum((x, y) => x / y, x, y)
+
+def applyOperation(op: (Int, Int) => Int): (Int, Int) => Int =
+	def _applyOperation op(x, y) = op(x,y)
+    _applyOperations
+
+def sum = sum((x, y) => x + y)
+def division = sum((x, y) => x / y)
+
+def applyOperation(op: (Int, Int) => Int)(x: Int, y: Int) : Int =
+	op(x, y)
+
+def sum = sum((x, y) => x + y)
+def division = sum((x, y) => x / y)
+```
+
+#### Function precedence
+
+The rule of thumb is that function are evauluated from left to right.
+However this is not true if the identifier (name) of a function starts with symbols.
+
+The precedence of an operator is determined by its first character.
+The following table lists the characters in increasing order of priority
+precedence:
+(all letters) -> lowest precedence
+|
+^
+&
+< >
+= !
+:
++ -
+* / %
+(all other special characters) -> highest precdence
+
+### Class
+
+```scala
+class Rational(x: Int, y: Int) {
+	def numer = x
+    def dnom = y
+}
+```
+
+This definition introducs 2 entities:
+- A new type, named Rational
+- A constructor Rational to create elements of this type
+
+Class instantiation
+
+```sscala
+new Rational(3, 4)
+```
+
