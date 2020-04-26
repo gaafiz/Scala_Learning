@@ -35,7 +35,7 @@ Getting popular because
 
 #  Scala
 
-Born in 2003
+Born in 2003. Is a functional AND object orientedlanguage
 
 
 #### For parallelism
@@ -208,6 +208,8 @@ def division = sum((x, y) => x / y)
 #### Function precedence
 
 The rule of thumb is that function are evauluated from left to right.
+> **NOTE:** Operators ending in ":" are associated to the right.
+> `val numList = 1 :: 2 :: Nill` is equal to `val numList = Nill.::(2).::(1)`
 However this is not true if the identifier (name) of a function starts with symbols.
 
 The precedence of an operator is determined by its first character.
@@ -243,3 +245,153 @@ Class instantiation
 new Rational(3, 4)
 ```
 
+#### singletons
+
+Singleton are classes that have can have only one instance.
+In scala there is facilitated syntaxt for it and consists in defining an object
+
+```scala
+object MySingleton {
+	// ...
+}
+val x = MySingleton
+````
+
+This declaration - at the same time - define a class and instanciate an object of that class - named MySingleton - and block the possibility of instanciating more objects of that class
+
+#### traits
+
+Traits resemble interfaces in Java, but are more powerful because they can contains fields and concrete methods.
+They cannot have (value) parameters, only classes can
+
+```scala
+trait Planar {
+	def height: Int
+    def width: Int
+    def surface = height * width
+}
+```
+
+#### Subclasses
+
+```scala
+class Square extends Shape with Planar with Movable ... {
+ // ...
+}
+```
+
+### Main
+
+2 Syntax possible.
+
+**Java like**
+```scala
+object Main {
+	def main(args: Array[String]) {
+    	println("Hello World")
+    }
+}
+```
+
+**New Syntax**
+
+```scala
+object Main eztends App {
+    println("Hello World")
+}
+```
+
+
+### Class as Function
+
+functions in scala are simply anonymous classes with an apply method defined.
+For this reason, if we define an apply method in a whatever trait, it'll allow us to use the trait identificator in a function-fashion way.
+
+```scala
+//Defining a trait like this
+trait MyTrait(property: Int) {
+	// ... other trait code
+
+	def apply(): String = {
+    	// do something
+    }
+}
+
+// You are then allowed to use the class as a function
+val out = MyTrait()
+// That will be converted in calling:
+val out  = (new Trait {}).apply()
+```
+
+
+#### Require and assert
+
+// TODO
+
+
+### Scala's class Hierarchy
+
+Interesting classes: Any, AnyVal, AnyRef === java.lang.Object, scala.ScalaObject, Null, Nothing.
+Scheme:
+![](scala_class_hierarchy.png)
+
+
+### Polymorphism
+
+Two principal forms of polymorphism:
+* subtyping
+* generics
+
+Interactions between the 2 concepts:
+- bounds
+- variance
+
+#### bounds
+
+```scala
+// upper bound - for Intset and its subtypes
+def assertAllPos[S <: IntSet](r: S): S = //...
+
+// lower bound - for Intset and its supertypes
+def assertAllPos[S >: IntSet](r: S): S = //...
+```
+
+#### variance
+
+// TODO covariance if we have a nested type that changes, like List[T <: Object]
+
+```scala
+// Covariance is valid for Java Arrays. These 2 lines are valid java code
+Integer[] a = new Integer[]{1, 2}
+Object[] b = a
+
+// Covariance is not valid for scala arrays. These 2 lines are not valid scala code
+val a: Array[Int] = Array[Int](1, 2)
+val b: Array[Object] = a
+```
+
+a function `(A1) => B1` is a subtype of a function `(A2) => B2`; if:
+- A2 <: A1
+- B1 <: B2
+
+### Pattern Matching
+
+Pattern matching is a generalization of `switch` from C/Java to class hierarchies.
+It's expressed in Scala using the keyword match.
+
+```java
+myObject match {
+	case Int => println("I'm an Integer")
+    case String => println("I'm an String")
+}
+```
+
+A MatchError exception is thrown if no pattern matches
+
+
+### Lists vs Arrays
+
+````scala
+val aList = List(1, 2, 3)	// Immutable
+val anArr = Array(1, 2, 3)	// Mutable
+```
