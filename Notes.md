@@ -383,7 +383,7 @@ It's expressed in Scala using the keyword match.
 myObject match {
 	case Int => println("I'm an Integer")
     case String => println("I'm an String")
-}
+} 
 ```
 
 A MatchError exception is thrown if no pattern matches
@@ -395,3 +395,87 @@ A MatchError exception is thrown if no pattern matches
 val aList = List(1, 2, 3)	// Immutable
 val anArr = Array(1, 2, 3)	// Mutable
 ```
+
+#### Useful list methods and elements
+
+* xs.length : length of the list
+* xs.last : last list item (exception if list empty)
+* xs.init : remove last element from list (exception if list empty)
+* xs take n : take the first n (or all if the list is smaller than n) elements from the list
+* xs drop n : remove the first n elements from the list
+* xs(n) : get the element in nth position
+* xa ::: ys : concatenate lists. Operator is right associative and more effiecient for this specific operation.
+* xs ++ ys : concatenate lists (or any collection), more flexible but less efficient left associative concatenation.
+* xs.revers : returns reversed list
+* xs updated (n, x) : return a copy of xs with only the nth changed to be x
+* xs indexOf x : finds x in xs
+* xs contains x : true if x is part of xs
+
+#### Common trasnformations on lists
+* Map
+* Filter
+* partition
+* takeWhile, dropWhile, span
+* reduceLeft(operation), reduceRight
+* foldLeft, foldRight
+* sum, product
+
+### others
+* `xs exists p` true if there is an element x of xs such that p(x) holds, false otherwise.
+* `xs forall p` true if p(x) holds for all elements x of xs, false otherwise.
+* `xs zip ys` A sequence of pairs drawn from corresponding elements of sequences xs and ys.
+* `xs.unzip` Splits a sequence of pairs xs into two sequences consisting of the first, respectively second halves of all pairs.
+* `xs.flatMap` f Applies collection-valued function f to all elements of xs and concatenates the results
+* `xs.sum` The sum of all elements of this numeric collection.
+* `xs.product` The product of all elements of this numeric collection
+* `xs.max` The maximum of all elements of this collection (an Ordering must exist)
+* `xs.min` The minimum of all elements of this collection
+
+
+### Other Sequences
+
+#### Iterable
+
+Is the base class for Seq, Set, Map
+
+#### Seq and Iterable
+
+Seq is the base class of all sequences (i.e. List, Vector).
+Arrays and Strings can access all common sequences methods even if they do not extend the Seq classs.
+
+#### Vectors
+
+Array of 32 elem 2^5.
+if contains more than 32 elem, the array becomes an array of pointers to other 32-sized arrays of elements -> 2^10 element.
+And same goes on if you need more than 2^10 elements.
+- Access time is log(32, n)
+- Good for bulk operators like (map and foreach)
+- 32-size vector are good matches for modern CPU cache and often they can occupy the same cache region and being loaded at once (good loading performance)
+
+Operations:
+- Do not support x :: xs operation
+- insted, x +: xs is usable
+
+```scala
+val nums = Vector(1, 2, 3, -88)
+```
+
+#### Ranges
+
+Ranges implement Seq
+
+A range represents a sequence of evenly spaced integers.
+`to` (inclusive), `until` (exclusive), `by` (to determine step value):
+
+Ranges are represented as single objects with three fields: lower bound, upper bound, step value.
+
+```scala
+val r: Range = 1 until 5
+val s: Range = 1 to 5
+1 to 10 by 3
+6 to 1 by -2
+```
+
+### Implicit
+
+// TODO
